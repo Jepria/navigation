@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="Windows-1251"?>
+<map>
+  <map_version>1.3</map_version>
+  <name>Navigation</name>
+  <description>Функционал навигации для прикладных модулей</description>
+  <version>7.5.0</version>
+  <prefix>nav</prefix>
+  <team>
+    <programmerAPP>Иванов В.А.</programmerAPP>
+    <analyst>Талышев В.В.</analyst>
+  </team>
+  <request>
+    <msp></msp>
+  </request>
+  <path>JEP/Module/Navigation</path>
+  <initialPath>JEP/Module/Navigation@1</initialPath>
+  <db>
+    <database/>
+  </db>
+  <app>
+  </app>
+  <batchSpec></batchSpec>
+  <diagram>
+    <database></database>
+    <process></process>
+    <infrastructure></infrastructure>
+  </diagram>
+  <depend/>
+  <image></image>
+</map>

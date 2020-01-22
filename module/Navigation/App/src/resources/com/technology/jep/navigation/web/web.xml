@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<web-app>
+  <servlet>
+    <servlet-name>remoteLoggerServiceImpl</servlet-name>
+    <servlet-class>com.allen_sauer.gwt.log.server.RemoteLoggerServiceImpl</servlet-class>
+    <init-param>
+      <param-name>symbolMaps</param-name>
+      <param-value>C:/java/apache-tomcat-7.0.68/webapps/Navigation/Navigation/symbolMaps/</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>remoteLoggerServiceImpl</servlet-name>
+    <url-pattern>/Navigation/gwt-log</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>MainServiceServlet</servlet-name>
+    <servlet-class>com.technology.jep.jepria.server.service.JepMainServiceServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MainServiceServlet</servlet-name>
+    <url-pattern>/Navigation/MainService</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>ChangePasswordServlet</servlet-name>
+    <servlet-class>com.technology.jep.navigation.changepassword.server.service.ChangePasswordServiceImpl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ChangePasswordServlet</servlet-name>
+    <url-pattern>/Navigation/ChangePasswordService</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>NavigationServlet</servlet-name>
+    <servlet-class>com.technology.jep.navigation.navigation.server.service.NavigationServiceImpl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>NavigationServlet</servlet-name>
+    <url-pattern>/Navigation/NavigationService</url-pattern>
+  </servlet-mapping>
+  <filter>
+    <filter-name>ChangePasswordFilter</filter-name>
+    <filter-class>com.technology.jep.navigation.navigation.server.filter.ChangePasswordFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>ChangePasswordFilter</filter-name>
+    <url-pattern>/Welcome.jsp</url-pattern>
+  </filter-mapping>
+  
+  <welcome-file-list>
+    <welcome-file>Navigation.jsp</welcome-file>
+  </welcome-file-list>
+  
+  <!-- To access the module enough to have any role -->
+  <security-role> 
+    <role-name>*</role-name> 
+  </security-role>
+  
+   <!-- Allow request for Login page resources without authorization -->
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Application entry points</web-resource-name>
+      <url-pattern>/Navigation.jsp</url-pattern>
+      <url-pattern>/Navigation/*</url-pattern>
+      <url-pattern>/security/*</url-pattern>
+      <url-pattern>/js/*</url-pattern>
+      <url-pattern>/css/*</url-pattern>
+      <url-pattern>/images/*</url-pattern>
+    </web-resource-collection>
+  </security-constraint>
+  
+  <!-- Protect all resources of Application -->
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Application entry points</web-resource-name>
+      <url-pattern>/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <!-- At least user has to possess one of the specified roles -->
+      <role-name>*</role-name>
+    </auth-constraint>
+  </security-constraint>
+   
+   <login-config>
+    <auth-method>FORM</auth-method>
+    <form-login-config>
+      <form-login-page>/WEB-INF/security/Login.jsp</form-login-page>
+      <!-- Попадание на form-error-page невозможно (так как авторизация проходит не через это приложение, 
+          а через SsoUi, поэтому можно указать любой ресурс) -->
+      <form-error-page>/WEB-INF/security/Login.jsp</form-error-page>
+    </form-login-config>
+  </login-config>
+  
+  <error-page>
+    <error-code>403</error-code>
+    <location>/WEB-INF/security/Login.jsp</location>
+  </error-page>
+  
+  <session-config>
+    <!-- Disables URL-based sessions (no more 'jsessionid' in the URL using Tomcat) -->
+    <tracking-mode>COOKIE</tracking-mode>
+  </session-config>
+ 
+</web-app>

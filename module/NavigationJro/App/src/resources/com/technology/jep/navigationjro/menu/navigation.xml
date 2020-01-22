@@ -1,0 +1,21 @@
+<menu-definition resourceBundle="/WEB-INF/resources/com/technology/jep/navigationjro/text/NavigationJro.properties">
+
+  <menu name="navigation.language" frame="navigation" image="language.gif"/>
+
+  <menu name="navigation.authorization" frame="navigation" image="authorization.gif"/>
+  
+  <menu name="navigation.jepriashowcase" extContextPath="/NavigationJro" extMenu="/WEB-INF/resources/com/technology/jep/navigationjro/menu/navigationJrsc.xml" extProperty="/WEB-INF/resources/com/technology/jep/navigationjro/text/NavigationJro.properties" />
+  
+  <menu name="navigation.organization" extContextPath="/NavigationJro" extMenu="/WEB-INF/resources/com/technology/jep/navigationjro/menu/navigationOrg.xml" extProperty="/WEB-INF/resources/com/technology/jep/navigationjro/text/NavigationJro.properties" />
+
+  <menu name="navigation.changePassword" frame="content" image="changePassword.gif">
+    <roles>
+      <role>ShowChangePassword</role>
+    </roles>
+    <request em="ChangePassword">../Navigation</request>
+  </menu>
+  
+  <menu name="navigation.exit" frame="navigation" image="close.gif"/>
+  
+</menu-definition>
+

@@ -1,0 +1,16 @@
+<menu>
+  <menu name="navigation.organization.communicationDepartment">
+    <menu name="navigation.organization.communicationDepartment.site" frame="content">
+      <roles>
+        <role>CmsAll</role>
+      </roles>
+      <request em="Site">../Cms</request>
+    </menu>
+    <menu name="navigation.organization.communicationDepartment.resourceBundle" frame="content">
+      <roles>
+        <role>CmsAll</role>
+      </roles>
+      <request em="ResourceBundle">../Cms</request>
+    </menu>
+  </menu>
+</menu>

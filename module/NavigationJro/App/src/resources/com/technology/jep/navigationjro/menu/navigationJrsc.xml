@@ -1,0 +1,27 @@
+<menu>
+  <menu name="navigation.jepriashowcase.welcome" frame="_blank">
+    <request em="Custom">../JepRiaShowcase/JepRiaShowcaseCustom.jsp</request>
+  </menu>
+  <menu name="navigation.jepriashowcase.featureRequest" frame="content">
+    <menu name="navigation.jepriashowcase.featureRequest.feature" frame="content">
+      <roles>
+        <role>JrsEditFeature</role>
+        <role>JrsAssignResponsibleFeature</role>
+        <role>JrsEditAllFeature</role>
+      </roles>
+      <request em="Feature">../JepRiaShowcase/JepRiaShowcase.jsp</request>
+    </menu>
+    <menu name="navigation.jepriashowcase.featureRequest.featureOperator" frame="content">
+      <roles>
+        <role>JrsOperatorFeature</role>
+      </roles>
+      <request em="FeatureOperator">../JepRiaShowcase/JepRiaShowcase.jsp</request>
+    </menu>
+  </menu>
+  <menu name="navigation.jepriashowcase.supplier" frame="content">
+    <roles>
+      <role>JrsEditSupplier</role>
+    </roles>
+    <request em="Supplier">../JepRiaShowcase/JepRiaShowcase.jsp</request>
+  </menu>
+</menu>

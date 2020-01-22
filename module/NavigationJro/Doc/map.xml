@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="Windows-1251"?>
+<map>
+  <map_version>1.3</map_version>
+  <name>NavigationJro</name>
+  <description>Функционал навигации, замещающий основную структуру</description>
+  <version>1.2.1</version>
+  <prefix>navjro</prefix>
+  <team>
+    <programmerAPP>Иванов В.А.</programmerAPP>
+    <analyst>Талышев В.В.</analyst>
+  </team>
+  <request>
+    <msp></msp>
+  </request>
+  <path>JEP/Module/NavigationJro</path>
+  <initialPath>JEP/Module/NavigationJro@1</initialPath>
+  <db>
+    <database/>
+  </db>
+  <app>
+  </app>
+  <batchSpec></batchSpec>
+  <diagram>
+    <database></database>
+    <process></process>
+    <infrastructure></infrastructure>
+  </diagram>
+  <depend/>
+  <image></image>
+</map>

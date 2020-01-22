@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="windows-1251" standalone="no"?>
+<application defaultDatasource="RFInfoDS" name="Navigation" projectPackage="jep">
+    <modules>
+        <module id="Navigation" name="Навигация" nameEn="Navigation" isBuild="off">
+            <db datasource="RFInfoDS" package="pkg_navigation"/>
+        </module>
+        <module id="ChangePassword" name="Сменить пароль" nameEn="Change Password">
+            <db datasource="RFInfoDS" package="pkg_navigation"/>
+        </module>
+    </modules>
+</application>

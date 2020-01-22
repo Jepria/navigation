@@ -1,0 +1,76 @@
+.closeButtonTab {
+	position: absolute;
+	top: 0px;
+	right: 6px;
+	font-size: 14px;
+	color: black;
+	cursor: pointer;
+}
+
+.closeButtonTab:hover {
+	color: red;
+}
+
+.popupContextMenuNavigation {
+	font-size: 11px;
+	color: black;
+}
+
+.navigationFrame {
+	border-width: 1px;
+	border-color: #bbb;
+}
+
+.gwt-DecoratedPopupPanel .popupMiddleCenter {
+	background: #ccddf3;
+	border: 1px solid #99bbe8;
+}
+
+.gwt-TabLayoutPanel .gwt-TabLayoutPanelTabs {
+	background-color: white;
+	padding-left: 0px;
+	height: 21px; 
+}
+
+.gwt-DecoratedPopupPanel .popupMiddleRight {
+	background: none !important;
+}
+
+.gwt-DecoratedPopupPanel .popupMiddleLeft {
+	background: none !important;
+}
+
+.gwt-DecoratedPopupPanel .popupTopCenter {
+	background: none !important;
+}
+
+.gwt-DecoratedPopupPanel .popupTopLeft {
+	background: none !important;
+}
+.gwt-DecoratedPopupPanel .popupTopRight {
+	background: none !important;
+}
+
+.gwt-DecoratedPopupPanel .popupTopLeft {
+	background: none !important;
+}
+
+.gwt-DecoratedPopupPanel .popupBottomCenter {
+	background: none !important;
+}
+
+.gwt-DecoratedPopupPanel .popupBottomRight {
+	background: none !important;
+}
+
+.gwt-DecoratedPopupPanel .popupBottomLeft {
+	background: none !important;
+}
+
+.tabPanelScrollButton {
+	cursor: pointer;
+}
+
+.gwt-StackLayoutPanel .gwt-StackLayoutPanelContent {
+	padding: 0px;
+}

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<application>
+  <display-name>Navigation</display-name>
+  <module>
+    <web>
+      <web-uri>navigation.war</web-uri>
+      <context-root>Navigation</context-root>
+    </web>
+  </module>
+</application>

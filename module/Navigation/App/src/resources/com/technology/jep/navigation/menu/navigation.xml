@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menu-definition resourceBundle="com.technology.jep.navigation.navigation.shared.text.NavigationText">
+
+  <!-- 
+    Пример объединение ролей в группу.
+    Такое объявление позволяет использовать имя RolesGroupLabel в тега roles в menu. 
+  -->
+  <role-definitions>
+    <role-definition name="RolesGroupLabel">
+      <role>Role1</role>
+      <role>Role2</role>
+      <role>Role3</role>
+      <role>Role4</role>
+    </role-definition>
+  </role-definitions>
+  
+  <!-- 
+  Пример, подключения навигации внешнего модуля:
+    <menu name="navigation.jepriashowcase" extPath="..\navigationjro\WEB-INF\resources\com\technology\jep\navigationjro\menu\navigationJro.xml" extProperty="..\navigationjro\WEB-INF\resources\com\technology\jep\navigationjro\text\NavigationJro.properties" />
+ -->
+
+  <menu name="navigation.language" frame="navigation" image="language.gif"/>
+
+  <menu name="navigation.authorization" frame="navigation" image="authorization.gif"/>
+  
+  <menu name="navigation.jepriashowcase">
+    <menu name="navigation.jepriashowcase.welcome" frame="_blank">
+      <request >../JepRiaShowcase</request>
+    </menu>
+    <menu name="navigation.jepriashowcase.feature" frame="content">
+      <roles>
+        <role>JrsEditFeature</role>
+      </roles>
+      <request em="Feature">../JepRiaShowcase/JepRiaShowcase.jsp</request>
+    </menu>
+    <menu name="navigation.jepriashowcase.supplier" frame="content">
+      <roles>
+        <role>JrsEditSupplier</role>
+      </roles>
+      <request em="Supplier">../JepRiaShowcase/JepRiaShowcase.jsp</request>
+    </menu>
+  </menu>
+
+  <menu name="navigation.changePassword" frame="content" image="changePassword.gif">
+    <roles>
+      <role>ShowChangePassword</role>
+    </roles>
+    <request em="ChangePassword">../Navigation</request>
+  </menu>
+  
+  <menu name="navigation.exit" frame="navigation" image="close.gif"/>
+</menu-definition>
+

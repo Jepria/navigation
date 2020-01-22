@@ -1,0 +1,168 @@
+<project default="build-and-deploy">
+  <taskdef resource="net/sf/antcontrib/antlib.xml" />
+  <property file="local.properties" />
+  <property environment="env" />
+  <if>
+    <isset property="env.BIN_HOME" />
+    <then>
+      <property name="BIN_HOME" value="${env.BIN_HOME}" />
+    </then>
+  </if>
+  <if>
+    <isset property="BIN_HOME" />
+    <then>
+      <echo message="Binary repository path: ${BIN_HOME}" />
+    </then>
+    <else>
+      <fail message="Binary repository path not specified. Specify it either in environment variable %BIN_HOME% or use -DBIN_HOME=... command line argument." />
+    </else>
+  </if>
+  <property file="dependency.properties" />
+  <property file="build.properties" />
+  <property file="config/${BUILD_CONFIG}/deploy.properties"/>
+  <property name="LOG_LEVEL" value="info" />
+
+  <path id="tomcat-libs">
+    <pathelement location="${TOMCAT-CATALINA-ANT_LIB}" />
+    <pathelement location="${TOMCAT-COYOTE_LIB}" />
+    <pathelement location="${TOMCAT-UTIL_LIB}" />
+  </path>
+	
+  <!-- Проверка наличия всех используемых библиотек (зависимостей) -->
+  <target name="check-dependencies" >
+    <propertyselector
+        property="pack.list"
+        delimiter=","
+        match="([^\s]+(\_(?i)(lib|jslib))$)"
+        select="\1"
+        casesensitive="false" />
+                 
+    <echo message="Dependency checking..."/>
+    <for list="${pack.list}" param="lib-path">
+      <sequential>
+        <if> <available file="${@{lib-path}}"/>
+          <then/>
+          <else>
+            <echo>Required library '${@{lib-path}}' is absent</echo>
+            <property name="DEPENDENCY_ABSENCE" value="true" />
+          </else>
+        </if>
+      </sequential>
+    </for>
+    <if> <equals arg1="${DEPENDENCY_ABSENCE}" arg2="true" />
+      <then>
+        <echo>Dependency checking failed</echo>
+        <fail message="BINARY REPOSITORY PROBABLY SHOULD BE UPDATED"/>
+      </then>
+    </if>
+    <echo message="Dependency checking succeeded"/>
+  </target>
+
+  <!-- Инициализация переменных модуля  -->
+  <target name="init" depends="start-log, check-dependencies" >
+    <property name="MODULE_PACKAGE" value="com/technology/${PROJECT_NAME_IN_PACKAGE}/${MODULE_NAME_IN_PACKAGE}" />
+    <property name="RESOURCE_HOME" value="src/resources/${MODULE_PACKAGE}" />
+    <property name="TEXT_RESOURCE_HOME" value="${RESOURCE_HOME}/text" />
+  </target> 
+
+  <target name="start-log">
+    <mkdir dir="log" />
+      <tstamp>
+        <format property="timestamp" pattern="yyyyMMdd_HHmmss"/>
+      </tstamp>
+      <dirname property="pdir" file="." />
+        <basename property="version" file="${pdir}" />
+        <record name="log/${timestamp}-${MODULE_NAME}-${version}-${PROJECT_NAME}.txt" loglevel="${LOG_LEVEL}" />
+  </target>
+
+  <target name="check-menu" depends="init">
+    <available file="${RESOURCE_HOME}/menu" type="dir" property="menu.present"/>
+  </target>
+
+  <target name="check-date-before-convert-resources" depends="check-menu">
+    <uptodate targetfile="${TEXT_RESOURCE_HOME}/${MODULE_NAME}.properties" property="xmlBuild.convert-resources-not-required">
+      <srcfiles file="${TEXT_RESOURCE_HOME}/${MODULE_NAME}_Source.properties"/>
+    </uptodate>
+  </target>
+        
+  <target name="convert-resources" depends="check-date-before-convert-resources" unless="xmlBuild.convert-resources-not-required">
+    <native2ascii encoding="UTF-8" src="${TEXT_RESOURCE_HOME}" dest="${TEXT_RESOURCE_HOME}"
+      ext=".target_properties" includes="**/*_Source.properties" />
+    <move file="${TEXT_RESOURCE_HOME}/${MODULE_NAME}_Source.target_properties" tofile="${TEXT_RESOURCE_HOME}/${MODULE_NAME}.properties"/>
+  </target>
+  
+  <target name="ear" depends="convert-resources" unless="xmlBuild.ear-not-required">
+    <mkdir dir="temp-ear" />
+        
+    <copy todir="temp-ear/META-INF">
+      <fileset dir="${RESOURCE_HOME}" includes="application.xml" />
+    </copy>
+    
+    <copy todir="temp-ear/WEB-INF/resources/${MODULE_PACKAGE}/menu">
+      <fileset dir="${RESOURCE_HOME}/menu" />
+    </copy>
+    
+    <copy todir="temp-ear/WEB-INF/resources/${MODULE_PACKAGE}/text">
+      <fileset dir="${TEXT_RESOURCE_HOME}" />
+    </copy>
+        
+    <jar destfile="${DISTR_DIR}/${DISTR_NAME}.ear" basedir="temp-ear" />
+                
+    <delete dir="temp-ear" />
+  </target>
+        
+  <target name="build-and-deploy" depends="ear, deploy" />
+
+  <target name="define-tomcat">
+    <taskdef name="tomcat.deploy" classname="org.apache.catalina.ant.DeployTask" classpathref="tomcat-libs" />
+    <taskdef name="tomcat.undeploy" classname="org.apache.catalina.ant.UndeployTask" classpathref="tomcat-libs" />
+  </target>
+  
+  <target name="undeploy" description="Undeploy from Tomcat" depends="define-tomcat">
+    <tomcat.undeploy 
+      failonerror="no"
+      url="${DEPLOYMENT_PATH}"
+      username="${LOGIN}"
+      password="${PASSWORD}"
+      path="/${MODULE_NAME}"
+    />
+  </target>
+  
+  <target name="deploy" description="Deploy to Tomcat" depends="init, define-tomcat, undeploy">
+    
+    <echo message="Deploying ${DISTR_DIR}/${DISTR_NAME}.ear to:${DEPLOYMENT_PATH}"/>
+    <echo message="Deploy to Tomcat..." />
+    <echo message="LOGIN: ${LOGIN}" />
+    <echo message="PASSWORD: ${PASSWORD}" />
+    
+    <tomcat.deploy 
+      url="${DEPLOYMENT_PATH}"
+      username="${LOGIN}"
+      password="${PASSWORD}"
+      path="/${MODULE_NAME}"
+      war="file:${DISTR_DIR}/${DISTR_NAME}.war"
+      update="true"
+    />
+  </target>
+
+  <target name="oc4j.deploy" depends="check-dependencies, start-log">
+    <echo message="Deploying to OC4J at ${DEPLOYMENT_PATH}"/>
+    <java fork="yes" jar="${ADMIN_CLIENT_JAR}" failonerror="false" resultproperty="javaReturnCode" errorproperty="errorMessage">
+      <arg value="deployer:oc4j:${DEPLOYMENT_PATH}" />
+      <arg value="${LOGIN}" />
+      <arg value="${PASSWORD}" />
+      <arg value="-deploy" />
+      <arg value="-file" />
+      <arg value="${DISTR_DIR}/${DISTR_NAME}.ear" />
+      <arg value="-deploymentName" />
+      <arg value="${MODULE_NAME_IN_PACKAGE}" />
+      <arg value="-bindAllWebApps" />
+    </java>
+  </target>
+
+  <target name="clean">
+    <delete includeemptydirs="true">
+      <fileset dir="log"/>
+    </delete>
+  </target>
+</project>
